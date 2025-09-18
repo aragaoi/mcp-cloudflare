@@ -1,7 +1,7 @@
 {
   "name": "@thelord/mcp-cloudflare",
-  "description": "A Model Context Protocol server implementation for Cloudflare DNS that enables AI agents to manage DNS records for your domains",
-  "version": "1.6.0",
+  "description": "A Model Context Protocol server implementation for Cloudflare DNS that enables AI agents to manage DNS records, migrate domains to Cloudflare, and automatically replicate existing DNS configurations",
+  "version": "1.8.0",
   "author": "TheLord",
   "main": "dist/index.js",
   "module": "./src/index.ts",
@@ -26,7 +26,13 @@
     "mcp",
     "cloudflare",
     "dns",
-    "domain-management"
+    "domain-management",
+    "domain-migration",
+    "zone-management",
+    "nameserver-migration",
+    "dns-replication",
+    "automatic-migration",
+    "zone-file-import"
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.1",
