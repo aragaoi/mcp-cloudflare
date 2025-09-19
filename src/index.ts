@@ -1,4 +1,5 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
@@ -1666,3 +1667,44 @@ ${
 
   return server;
 }
+
+// Initialize and start server
+async function main() {
+  const server = createServer({
+    config: {
+      cloudflareApiToken: process.env.CLOUDFLARE_API_TOKEN || '',
+      cloudflareZoneId: process.env.CLOUDFLARE_ZONE_ID || '',
+      cloudflareEmail: process.env.CLOUDFLARE_EMAIL
+    }
+  });
+
+  try {
+    // Connect to stdio transport
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    
+    // Log to stderr to avoid interfering with stdio communication
+    console.error('MCP Cloudflare server started successfully');
+    console.error('Server is ready to handle MCP requests via stdio');
+  } catch (error) {
+    console.error('Failed to start MCP Cloudflare server:', error);
+    process.exit(1);
+  }
+}
+
+// Handle graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('Shutting down MCP Cloudflare server...');
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  console.log('Shutting down MCP Cloudflare server...');
+  process.exit(0);
+});
+
+// Start the server
+main().catch((error) => {
+  console.error('Unhandled error:', error);
+  process.exit(1);
+});
